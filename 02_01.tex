@@ -1,0 +1,673 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[intlimits]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ragged2e}
+\usepackage[letterpaper, margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{mathtools}
+\usepackage{tabularx}
+\usepackage{arydshln}
+\usepackage{tensor}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[boxed]{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{textcomp}
+% \usepackage[pdf,tmpdir,singlefile]{graphviz}
+\usepackage{mathrsfs}
+\usepackage{bbm}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{arydshln}
+\usepackage{relsize}
+\usepackage{multirow,multicol}
+\usepackage{scalerel}
+\usepackage{upgreek}
+\usepackage{ifthen}
+
+\usetikzlibrary{bayesnet}
+\setlist{noitemsep}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formatting commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\n}{\hfill\break}
+\newcommand{\nn}{\vspace{0.5\baselineskip}\n}
+\newcommand{\up}{\vspace{-\baselineskip}}
+\newcommand{\hangblock}[2]{\par\noindent\settowidth{\hangindent}{\textbf{#1: }}\textbf{#1: }\nolinebreak#2}
+\newcommand{\lemma}[1]{\hangblock{Lemma}{#1}}
+\newcommand{\defn}[1]{\hangblock{Defn}{#1}}
+\newcommand{\thm}[1]{\hangblock{Thm}{#1}}
+\newcommand{\cor}[1]{\hangblock{Cor}{#1}}
+\newcommand{\prop}[1]{\hangblock{Prop}{#1}}
+\newcommand{\ex}[1]{\hangblock{Ex}{#1}}
+\newcommand{\exer}[1]{\hangblock{Exer}{#1}}
+\newcommand{\fact}[1]{\hangblock{Fact}{#1}}
+\newcommand{\remark}[1]{\hangblock{Remark}{#1}}
+\newcommand{\proven}{\;$\square$\n}
+\newcommand{\problem}[1]{\par\noindent{\nolinebreak#1}\n}
+\newcommand{\problempart}[2]{\par\noindent\indent{}\settowidth{\hangindent}{\textbf{(#1)} \indent{}}\textbf{(#1) }\nolinebreak#2\n}
+\newcommand{\ptxt}[1]{\textrm{\textnormal{#1}}}
+\newcommand{\inlineeq}[1]{\centerline{$\displaystyle #1$}}
+\newcommand{\pageline}{\up\par\noindent\rule{\textwidth}{0.1pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set Theory
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\setmid}{\;\middle|\;}
+\newcommand{\ps}[1]{\mathcal{P}\left(#1\right)}
+\newcommand{\pfinite}[1]{\mathcal{P}^{\ptxt{finite}}\left(#1\right)}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\N}{\naturals}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\Z}{\integers}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Q}{\rationals}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\R}{\reals}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\C}{\complex}
+\newcommand{\halfPlane}{\mathbb{H}}
+\let\HSym\H
+\let\H\relax
+\newcommand{\H}{\halfPlane}
+\newcommand{\comp}{^{\complement}}
+\DeclareMathOperator{\Hom}{Hom}
+\newcommand{\Ind}{\mathbbm{1}}
+\newcommand{\cut}{\setminus}
+\DeclareMathOperator{\elem}{elem}
+
+% Differentiable Manifolds
+\newcommand{\RP}{\mathbb{RP}}
+\newcommand{\CP}{\mathbb{RP}}
+\newcommand{\osubset}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\subset}}
+\newcommand{\osubseteq}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\subseteq}}
+\newcommand{\osupset}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\supset}}
+\newcommand{\osupseteq}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\supseteq}}
+\newcommand{\pdat}[3]{\left.\pd{#1}{#2}\right|_{#3}}
+\DeclareMathOperator{\so}{so}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\Diff}{Diff}
+\let\dSym\d
+\let\d\relax
+\newcommand{\d}{\partial}
+\DeclareMathOperator{\gl}{gl}
+\DeclareMathOperator{\Ad}{Ad}
+\newcommand{\comm}[1]{\left[#1\right]}
+
+% Graph Theory
+\let\deg\relax
+\DeclareMathOperator{\deg}{deg}
+\newcommand{\degp}{\ptxt{deg}^{+}}
+\newcommand{\degn}{\ptxt{deg}^{-}}
+\newcommand{\precdot}{\mathrel{\ooalign{$\prec$\cr\hidewidth\hbox{$\cdot\mkern0.5mu$}\cr}}}
+\newcommand{\succdot}{\mathrel{\ooalign{$\cdot\mkern0.5mu$\cr\hidewidth\hbox{$\succ$}\cr\phantom{$\succ$}}}}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\affdim}{affdim}
+
+% Probability
+\newcommand{\parSymbol}{\P}
+\newcommand{\Prob}{\mathbb{P}}
+\renewcommand{\P}{\Prob}
+\newcommand{\Avg}{\mathbb{E}}
+\newcommand{\E}{\Avg}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\Unif}{Unif}
+\DeclareMathOperator{\Binom}{Binom}
+\newcommand{\CI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\DeclareMathOperator{\Ber}{Ber}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Beta}{Beta}
+\DeclareMathOperator{\Normal}{N}
+
+% Standard Math
+\newcommand{\inv}{^{-1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil{}#1\right\rceil{}}
+\newcommand{\floor}[1]{\left\lfloor{}#1\right\rfloor{}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\of}{\circ}
+\newcommand{\tri}{\triangle}
+\newcommand{\inj}{\hookrightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\ndiv}{\nmid}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\map}[4]{\!\!\!\begin{array}[t]{rcl}#1 & \!\!\!\!\to & \!\!\!\!#2\\ {}#3 & \!\!\!\!\mapsto & \!\!\!\!#4\end{array}}
+\newcommand{\bigsum}[2]{\smashoperator[lr]{\sum_{\scalebox{#1}{$#2$}}}}
+\DeclareMathOperator{\gcf}{gcf}
+\newcommand{\restr}[2]{\left.#1\right|_{#2}}
+
+% Linear Algebra
+\newcommand{\Id}{\textrm{\textnormal{Id}}}
+\newcommand{\im}{\textrm{\textnormal{im}}}
+\newcommand{\norm}[1]{\abs{\abs{#1}}}
+\newcommand{\tpose}{^{T}\!}
+\newcommand{\iprod}[1]{\left<#1\right>}
+\newcommand{\giprod}{\iprod{\;\,,\;}}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\trace}{tr}
+\newcommand{\chgBasMat}[3]{\!\!\tensor*[_{#1}]{\left[#2\right]}{_{#3}}}
+\newcommand{\vecBas}[2]{\tensor*[]{\left[#1\right]}{_{#2}}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\vspan}{span}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\V}[1]{\vec{#1}}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\compProj}{comp}
+\DeclareMathOperator{\row}{row}
+\newcommand{\smallPMatrix}[1]{\paren{\begin{smallmatrix}#1\end{smallmatrix}}}
+\newcommand{\smallBMatrix}[1]{\brack{\begin{smallmatrix}#1\end{smallmatrix}}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\dual}{^{*}}
+\newcommand{\pinv}{^{\dagger}}
+\newcommand{\horizontalMatrixLine}{\ptxt{\rotatebox[origin=c]{-90}{$|$}}}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\Symm}{Symm}
+\DeclareMathOperator{\SU}{SU}
+\DeclareMathOperator{\U}{U}
+
+% Multilinear Algebra
+\let\Lsym\L
+\let\L\relax
+\DeclareMathOperator{\L}{\mathscr{L}}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\Alt}{Alt}
+\DeclareMathOperator{\Sym}{Sym}
+\newcommand{\ot}{\otimes}
+\newcommand{\ox}{\otimes}
+\DeclareMathOperator{\asc}{asc}
+\DeclareMathOperator{\asSet}{set}
+\DeclareMathOperator{\sort}{sort}
+\DeclareMathOperator{\ringA}{\mathring{A}}
+\DeclareMathOperator{\Sh}{Sh}
+\DeclareMathOperator{\Bil}{Bil}
+
+% Topology
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\uball}{\mathcal{U}}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Bd}{Bd}
+\DeclareMathOperator{\rInt}{rInt}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\ah}{ah}
+\newcommand{\LargerTau}{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\tau}}}}}
+\newcommand{\Tau}{\mathcal{T}}
+
+% Analysis
+\DeclareMathOperator{\Graph}{Graph}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\hypo}{hypo}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\lint}[2]{\underset{#1}{\overset{#2}{{\color{black}\underline{{\color{white}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\uint}[2]{\underset{#1}{\overset{#2}{{\color{white}\underline{{\color{black}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\alignint}[2]{\underset{#1}{\overset{#2}{{\color{white}\underline{{\color{white}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\extint}{\ptxt{ext}\int}
+\newcommand{\extalignint}[2]{\ptxt{ext}\alignint{#1}{#2}}
+\newcommand{\conv}{\ast}
+\newcommand{\pd}[2]{\frac{\partial{}#1}{\partial{}#2}}
+\newcommand{\del}{\nabla}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\curl}{curl}
+\let\div\relax
+\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\vol}{vol}
+
+% Complex Analysis
+\let\Re\relax
+\DeclareMathOperator{\Re}{Re}
+\let\Im\relax
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Res}{Res}
+
+% Abstract Algebra
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\generated}[1]{\left<#1\right>}
+\newcommand{\cycle}[1]{\smallPMatrix{#1}}
+\newcommand{\id}{\ptxt{id}}
+\newcommand{\iso}{\cong}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\op}{op}
+\newcommand{\isom}[4]{\!\!\!\begin{array}[t]{rcl}#1 & \!\!\!\!\overset{\sim}{\to} & \!\!\!\!#2\\ #3 & \!\!\!\!\mapsto & \!\!\!\!#4\end{array}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\acts}{\;\reflectbox{\rotatebox[origin=c]{-90}{$\circlearrowright$}}\;}
+\newcommand{\disjunion}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\stab}{stab}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\Perm}{Perm}
+\DeclareMathOperator{\nsubgp}{\vartriangleleft}
+\DeclareMathOperator{\notnsubgp}{\ntriangleleft}
+\newcommand{\presentation}[2]{\left<#1\;\middle|\;#2\right>}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\fchar}{char}
+\DeclareMathOperator{\triv}{triv}
+\DeclareMathOperator{\reg}{reg}
+\DeclareMathOperator{\std}{std}
+\DeclareMathOperator{\Func}{Func}
+\DeclareMathOperator{\End}{End}
+
+% Convex Optimization
+\let\sectionSymbol\S
+\let\S\relax
+\newcommand{\S}{\mathbb{S}}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\ones}{\mathbbm{1}}
+\newcommand{\minimizeOver}[3]{\begin{array}{rl}\underset{#1}{\ptxt{minimize}} & #2\\ \ptxt{subject to} & #3\end{array}}
+\newcommand{\maximizeOver}[3]{\begin{array}{rl}\underset{#1}{\ptxt{maximize}} & #2\\ \ptxt{subject to} & #3\end{array}}
+\newcommand{\minimizationProblem}[2]{\minimizeOver{}{#1}{#2}}
+\newcommand{\maximizationProblem}[2]{\maximizeOver{}{#1}{#2}}
+\newcommand{\minimizeOverUnconstrained}[2]{\begin{array}{rl}\underset{#1}{\ptxt{minimize}} & #2\end{array}}
+\newcommand{\maximizeOverUnconstrained}[2]{\begin{array}{rl}\underset{#1}{\ptxt{maximize}} & #2\end{array}}
+\newcommand{\minimizationUnconstrained}[1]{\minimizeOverUnconstrained{}{#1}}
+\newcommand{\maximizationUnconstrained}[1]{\maximizeOverUnconstrained{}{#1}}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+
+% Proofs
+\newcommand{\st}{s.t.}
+\newcommand{\unique}{!}
+\newcommand{\iffdef}{\overset{\ptxt{def}}{\Leftrightarrow}}
+\newcommand{\eqVertical}{\rotatebox[origin=c]{90}{=}}
+\newcommand{\mapsfrom}{\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
+\newcommand{\mapsdown}{\rotatebox[origin=c]{-90}{$\mapsto$}\mkern2mu}
+\newcommand{\mapsup}{\rotatebox[origin=c]{90}{$\mapsto$}\mkern2mu}
+\newcommand{\from}{\!\mathrel{\reflectbox{\ensuremath{\to}}}}
+\newcommand{\labeledeq}[1]{\overset{\mathclap{\ptxt{#1}}}{=}}
+\newcommand{\eqdef}{\labeledeq{def}}
+
+% Brackets
+\newcommand{\paren}[1]{\left(#1\right)}
+\renewcommand{\brack}[1]{\left[#1\right]}
+\renewcommand{\brace}[1]{\left\{#1\right\}}
+\newcommand{\ang}[1]{\left<#1\right>}
+
+% Algorithms
+\algrenewcommand{\algorithmiccomment}[1]{\hskip 1em \texttt{// #1}}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\newcommand{\algP}{\ptxt{\textbf{P}}}
+\newcommand{\algNP}{\ptxt{\textbf{NP}}}
+\newcommand{\algNPC}{\ptxt{\textbf{NP-Complete}}}
+\newcommand{\algNPH}{\ptxt{\textbf{NP-Hard}}}
+\newcommand{\algEXP}{\ptxt{\textbf{EXP}}}
+\DeclareMathOperator{\fl}{fl}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other commands and shorthand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\flag}[1]{\textbf{\textcolor{red}{#1}}}
+\let\uSym\u
+\let\u\relax
+\newcommand{\u}[1]{\underline{#1}}
+\let\bSym\b
+\let\b\relax
+\newcommand{\b}[1]{\textbf{#1}}
+\let\iSym\i
+\let\i\relax
+\newcommand{\i}[1]{\textit{#1}}
+\let\scSym\sc
+\let\sc\relax
+\newcommand{\sc}[1]{\textsc{#1}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make l's curvy in math environments %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mathcode`l="8000
+\begingroup
+\makeatletter
+\lccode`\~=`\l
+\DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
+\lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
+\endgroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fix \vdots and \ddots %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{letltxmacro}
+\LetLtxMacro\orgvdots\vdots
+\LetLtxMacro\orgddots\ddots
+
+\makeatletter
+\DeclareRobustCommand\vdots{%
+	\mathpalette\@vdots{}%
+}
+\newcommand*{\@vdots}[2]{%
+	% #1: math style
+	% #2: unused
+	\sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+	\sbox2{$#1.\m@th$}%
+	\vbox{%
+		\dimen@=\wd0 %
+		\advance\dimen@ -3\ht2 %
+		\kern.5\dimen@
+		% remove side bearings
+		\dimen@=\wd2 %
+		\advance\dimen@ -\ht2 %
+		\dimen2=\wd0 %
+		\advance\dimen2 -\dimen@
+		\vbox to \dimen2{%
+			\offinterlineskip
+			\copy2 \vfill\copy2 \vfill\copy2 %
+		}%
+	}%
+}
+\DeclareRobustCommand\ddots{%
+	\mathinner{%
+		\mathpalette\@ddots{}%
+		\mkern\thinmuskip
+	}%
+}
+\newcommand*{\@ddots}[2]{%
+	% #1: math style
+	% #2: unused
+	\sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+	\sbox2{$#1.\m@th$}%
+	\vbox{%
+		\dimen@=\wd0 %
+		\advance\dimen@ -3\ht2 %
+		\kern.5\dimen@
+		% remove side bearings
+		\dimen@=\wd2 %
+		\advance\dimen@ -\ht2 %
+		\dimen2=\wd0 %
+		\advance\dimen2 -\dimen@
+		\vbox to \dimen2{%
+			\offinterlineskip
+			\hbox{$#1\mathpunct{.}\m@th$}%
+			\vfill
+			\hbox{$#1\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+			\vfill
+			\hbox{$#1\mathpunct{\kern\wd2}\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+		}%
+	}%
+}
+\makeatother
+
+\newcommand{\B}{
+	\begin{tikzpicture}
+	\filldraw [fill=red, draw=black] (0, 0) rectangle (0.37, 0.45);
+	\draw [line width=0.5mm, white ] (0.1,0.08) -- (0.1,0.38);
+	\draw[line width=0.5mm, white ] (0.1, 0.35) .. controls (0.2, 0.35) and (0.4, 0.2625) .. (0.1, 0.225);
+	\draw[line width=0.5mm, white ] (0.1, 0.225) .. controls (0.2, 0.225) and (0.4, 0.1625) .. (0.1, 0.1);
+	\end{tikzpicture}
+}
+
+% Allow custom symbols as arrows in tikz-cd
+\tikzset{
+  symbol/.style={
+    draw=none,
+    every to/.append style={
+      edge node={node [sloped, allow upside down, auto=false]{$#1$}}}
+  }
+}
+% Example: \arrow[r,symbol=\cong]
+% https://tex.stackexchange.com/questions/394154/how-to-include-inclusion-subgroup-relationship-in-tikz-cd-diagram
+
+\author{Thomas Cohn}
+\title{Stats 426 Lecture 4}
+\date{2/1/21} % Can also use \today
+
+\begin{document}
+\maketitle
+\setlength\RaggedRightParindent{\parindent}
+\RaggedRight
+
+\subsection*{Continuous Random Variables and Probability Distributions}
+
+\par\noindent
+Recall: A random variable $X$ is continuous if its set of possible values contains an entire interval of numbers. The distribution of $X$ is characterized by a pdf $f(x)$ \st{} $\forall{}a,b\in\R$ with $a<b$, $P(a<X<b)=\int_{a}^{b}f(x)\,dx$. Also, $f(x)\ge{}0$ $\forall{}x\in\R$, $f$ is piecewise continuous, and $\int_{\R}f=1$.\n
+
+\defn{
+	Suppose $X$ is a continuous random variable with density function $f$. Then the \u{cumulative distribution function} (or \u{cdf}) of $X$ is
+	\[
+		F(x)\eqdef{}P(X\le{}x)=\int_{-\infty}^{x}f(u)\,du
+	\]
+}
+
+\par\noindent
+Observe: $\lim_{s\to-\infty}F(s)=0$, $\lim_{s\to\infty}F(s)=1$.\n
+
+\par\noindent
+Some facts about $X$, an arbitrary continuous random variable:
+\begin{itemize}
+	\item $P(X=c)=0$, $\forall{}c\in\R$
+	\item $P(a\le{}X\le{}b)=F(b)-F(a)$
+	\item $P(a<X<b)=P(a<X\le{}b)=P(a\le{}X<b)=P(a\le{}X\le{}b)$
+	\item $\forall{}x$ where $F'(x)$ exists, $\frac{d}{dx}F(x)=f(x)$.
+\end{itemize}
+
+\subsection*{Quantiles}
+
+\defn{
+	If a cdf $F$ is strictly increasing, for $p\in(0,1)$, $x=F\inv(p)$ is called the \u{$p$th quantile}.\n
+}
+
+\defn{
+	The $0.5$ quantile is the \u{median}.\n
+	The $0.25$ quantile is the \u{lower quantile}.\n
+	The $0.75$ quantile is the \u{upper quantile}.\n
+}
+
+\defn{
+	$X$ follows an \u{exponential distribution} with parameter $\lambda$ ($X\sim\Exp(\lambda)$) if
+	\[
+		f(x;\lambda)=\left\{\begin{array}{ll}
+			\lambda{}e^{-\lambda{}x} & x\ge{}0\\
+			0 & x<0
+		\end{array}\right.\qquad
+		F(x;\lambda)=\left\{\begin{array}{ll}
+			1-e^{-\lambda{}x} & x\ge{}0\\
+			0 & x<0\\
+		\end{array}\right.
+	\]
+	Note: We must have $\lambda>0$.\n
+}
+
+\par\noindent
+$\Exp$ is often used as the distribution of lifetimes, or times between the occurrence of successive events.\n
+
+\par\noindent
+Suppose $X\sim\Exp(\lambda)$, and $x,x_{0}>0$. Then $P(X\ge{}x+x_{0}\mid{}X\ge{}x_{0})=P(X\ge{}x)$.\nn
+Proof:
+\[
+	P(X\ge{}x+x_{0}\mid{}X\ge{}x_{0})=\frac{P(X\ge{}x+x_{0},X\ge{}x_{0})}{P(X\ge{}x_{0})}=\frac{P(X\ge{}x+x_{0})}{P(X\ge{}x_{0})}=\frac{1-(1-e^{-\lambda{}(x+x_{0})})}{1-(1-e^{-\lambda{}x_{0}})}=e^{-\lambda{}x}=P(X\ge{}x)
+\]
+\proven
+
+\ex{
+	The lifetime of a component is exponentially-distributed, with parameter $\lambda=3$. If it has already worked for $10$ hours, what is the probability that it works for $4$ more hours?
+	\[
+		P(X\ge{}10+4\mid{}X\ge{}10)=P(X\ge{}4)=e^{-3\cdot{}4}=e^{-12}
+	\]
+}
+
+\defn{
+	$X$ follows a \u{gamma distribution} with \u{shape parameter} $\alpha>0$ and \u{scale parameter} $\lambda>0$ ($X\sim\gamma(\lambda,\alpha)$) if
+	\[
+		f(x)=\left\{\begin{array}{ll}
+			\frac{\lambda^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda{}x} & x\ge{}0\\
+			0 & x<0
+		\end{array}\right.
+	\]
+	where the \u{gamma function} $\Gamma$ satisfies
+	\[
+		\Gamma(\alpha)=\int_{0}^{\infty}x^{\alpha-1}e^{-x}\,dx
+	\]
+}
+
+\par\noindent
+Some properties of the gamma function:
+\begin{itemize}
+	\item $\forall\alpha>1$, $\Gamma(\alpha)=(\alpha-1)\Gamma(\alpha-1)$
+	\item $\forall{}n\in\N$, $\Gamma(n)=(n-1)!$
+	\item $\Gamma(\frac{1}{2})=\sqrt{\pi}$
+\end{itemize}
+
+\par\noindent
+Some properties of the gamma distribution:
+\begin{itemize}
+	\item $\Exp$ is a special case with $\alpha=1$.
+	\item The sum of i.i.d. exponential random variables follows a gamma distribution. If $X_{1},\ldots,X_{n}\overset{\ptxt{i.i.d.}}{\sim}\Exp(\lambda)$, then
+	\[
+		Y=\sum_{i=1}^{n}X_{i}\sim\Gamma(\lambda,n)
+	\]
+	\item The sum of i.i.d. gamma random variables follows a gamma distribution. If $X_{1},\ldots,X_{n}\overset{\ptxt{i.i.d.}}{\sim}\Gamma(\lambda,\alpha)$, then
+	\[
+		Y=\sum_{i=1}^{n}X_{i}\sim\Gamma(\lambda,n\alpha)
+	\]
+\end{itemize}
+
+\defn{
+	$X$ follows a \u{beta distribution} with parameters $a,b$ ($X\sim\Beta(a,b)$) if, for $0\le{}x\le{}1$,
+	\[
+		f(x)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}
+	\]
+}
+
+\par\noindent
+Observe: When $a=b=1$, $X\sim\Unif[0,1]$.\n
+
+\defn{
+	The normal distribution, with $\mu=0$ and $\sigma=1$, is called the \u{standard normal distribution}. $Z\sim{}\Normal(0,1)$ is called a standard normal random variable, with
+	\[
+		f(z)=\phi(z)=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}z^{2}}\qquad{}F(z)=\Phi(z)=P(Z\le{}z)
+	\]
+}
+
+\par\noindent
+We can standardize any normal random variable: $X\sim\Normal(\mu,\sigma^{2})\Leftrightarrow{}Z=\frac{X-\mu}{\sigma}\sim\Normal(0,1)$. Now, $P(X\le{}x)=\Phi(\frac{x-\mu}{\sigma})$.
+
+\subsection*{Quantiles of the Normal Distribution}
+
+\par\noindent
+Notation: $z_{\alpha}$ is the $100(1-\alpha)$ percentile / $1-\alpha$ quantile of the standard normal distribution. Say $X\sim\Normal(\mu,\sigma^{2})$. Let $\eta_{p}$ be the $p$ quantile of $X$. By standardizing, $P(X\le\eta_{p})=\Phi(\frac{\eta_{p}-\mu}{\sigma})$. We then solve $\Phi(\frac{\eta_{p}-\mu}{\sigma})=p$, and get $z_{1-p}=\frac{\eta_{p}-\mu}{\sigma}$, i.e., $\eta_{p}=\mu+\sigma{}z_{1-p}$.\n
+
+\par\noindent
+Say $X$ is a random variable with pdf $f_{X}$ and cdf $F_{X}$. Let $Y=g(X)$. We want to find $f_{Y}=f_{g(X)}$.\n
+
+\par\noindent
+Approach 1: The direct approach -- work through the cdf. Derive $F_{Y}$ and differentiate.\n
+
+\ex{
+	$X\sim\Normal(0,1)$, $Y=X^{2}$. Then $f_{Y}(y)=y^{-1/2}\phi(\sqrt{y})$ for $y\ge{}0$, and $0$ otherwise.\nn
+	Proof: For $y\ge{}0$,
+	\[
+		F_{Y}(y)=P(X^{2}\le{}y)=P(-\sqrt{y}\le{}X\le{}\sqrt{y})=F_{X}(\sqrt{y})-F_{X}(-\sqrt{y})=\Phi(\sqrt{y})-\Phi(-\sqrt{y})
+	\]
+	\[
+		f_{Y}(y)=\frac{d}{dy}F_{Y}(y)=\frac{d}{dy}(\Phi(\sqrt{y})-\Phi(-\sqrt{y}))=\frac{1}{2}\phi(y)y^{-1/2}-(-1\cdot\tfrac{1}{2})\phi(y)y^{-1/2}=\phi(y)y^{-1/2}
+	\]
+	\proven
+}
+
+\ex{
+	If $X\sim\Normal(\mu,\sigma^{2})$, $Y=aX+b$, then $Y\sim\Normal(a\mu+b,a^{2}\sigma^{2})$.\n
+}
+
+\par\noindent
+Approach 2: Chain rule.\n
+
+\thm{
+	(Chain Rule) Suppose $f,g$ are differentiable, and $h=g\of{}f$. Then $h'=(g'\of{}f)f'$.\n
+}
+
+\par\noindent
+Now suppose $g$ is differentiable, and monotonic on an interal $I$, with $f_{X}(x)=0$ outside of $I$. Then
+\[
+	f_{Y}(y)=f_{X}(g\inv(y))\abs{\frac{dg\inv(y)}{dy}}=f_{X}(g\inv(y))\abs{\frac{1}{g'(g\inv(y))}}
+\]
+for all $y$ \st{} $\exists{}x\in{}I$ \st{} $y=g(x)$. Otherwise, $f_{Y}(y)=0$.\n
+
+\defn{
+	The \u{joint probability mass function} of a pair of discrete random variables $X,Y$ is $p(x,y)=P(X=x\land{}Y=y)$.\n
+}
+
+\par\noindent
+The joint pmf must satisfy
+\begin{itemize}
+	\item $p(x,y)\ge{}0$, $\forall(x,y)$
+	\item $\sum_{x}\sum_{y}p(x,y)=1$
+\end{itemize}
+
+\defn{
+	The \u{marginal probability mass function} of $X$, given a joint probability mass function $p$, is $p_{X}(x)=\sum_{y}p(x,y)$.\n
+}
+
+\defn{
+	$X$ and $Y$ are \u{independent} if $\forall{}(x,y)$, $p(x,y)=p_{X}(x)p_{Y}(y)$.\n
+}
+
+\defn{
+	The \u{cumulative distribution function} of $X$ and $Y$ is
+	\[
+		F(x,y)=P(X\le{}x,Y\le{}y)=\sum_{\substack{x_{i}\le{}x\\ y_{i}\le{}y}}p(x_{i},y_{i})
+	\]
+}
+
+\par\noindent
+For $X_{1},\ldots,X_{m}$, the pdf is $p(x_{1},\ldots,x_{m})=P(X_{1}=x_{1},\ldots,X_{m}=x_{m})$.\n
+The marginal pdf of $X_{k}$ is
+\[
+	p_{X_{k}}(x)=\sum_{\mathclap{\substack{x_{1},\ldots,x_{k-1},\\ x_{k+1},\ldots,x_{m}}}}p(x_{1},\ldots,x_{k-1},x,x_{k+1},\ldots,x_{m})
+\]
+The marginal pdf of $X_{k}$ and $X_{l}$ is (WOLOG $k<l$)
+\[
+	p_{X_{k},X_{l}}(s,t)=P(X_{k}=s,X_{l}=t)=\sum_{\mathclap{\substack{x_{1},\ldots{}x_{k-1},\\ x_{k+1},\ldots,x_{l-1},\\ x_{l+1},\ldots,x_{m}}}}p(x_{1},\ldots,x_{k-1},s,x_{k+1},\ldots,x_{l-1},t,x_{l+1},\ldots,x_{m})
+\]
+
+\ex{
+	A fair coin is tossed $3$ times. $X$ is $1$ if the first toss is heads, and $0$ if it's tails. $Y$ is the total number of heads. Then the sample space is
+	\[
+		\set{(H,H,H),(H,H,T),(H,T,H),(H,T,T),(T,H,H),(T,H,T),(T,T,H),(T,T,T)}
+	\]
+	The pdf of $(X,Y)$ is
+	\[
+		\begin{array}{cc|cccc}
+			& & \multicolumn{4}{c}{Y}\\
+			& p(x,y) & 0 & 1 & 2 & 3 \\ \hline
+			& & \\[-10pt]
+			\multirow{2}{*}{X} & 0 & \frac{1}{8} & \frac{2}{8} & \frac{1}{8} & 0\\
+			& & \\[-10pt]
+			& 1 & 0 & \frac{1}{8} & \frac{2}{8} & \frac{1}{8}
+		\end{array}
+	\]
+	$P(X=0,Y=2)=\frac{1}{8}$\n
+	$P(Y=2)=P(X=0,Y=2)+P(X=1,Y=2)=\frac{3}{8}$\n
+	$F_{X,Y}(0,2)=P(X\le{}0,Y\le{}2)=\frac{1}{8}+\frac{2}{8}+\frac{1}{8}=\frac{1}{2}$\n
+	The marginal cdf of $Y$ is
+	\[
+		\begin{array}{c|cccc}
+			Y & 0 & 1 & 2 & 3\\ \hline
+			& & \\[-10pt]
+			\ptxt{pdf} & \frac{1}{8} & \frac{3}{8} & \frac{3}{8} & \frac{1}{8}\\
+			& & \\[-10pt]
+			\ptxt{cdf} & \frac{1}{8} & \frac{1}{2} & \frac{7}{8} & 1
+		\end{array}
+	\]
+}
+
+\end{document}
