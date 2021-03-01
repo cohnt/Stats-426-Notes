@@ -1,0 +1,519 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[intlimits]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ragged2e}
+\usepackage[letterpaper, margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{mathtools}
+\usepackage{tabularx}
+\usepackage{arydshln}
+\usepackage{tensor}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[boxed]{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{textcomp}
+% \usepackage[pdf,tmpdir,singlefile]{graphviz}
+\usepackage{mathrsfs}
+\usepackage{bbm}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{arydshln}
+\usepackage{relsize}
+\usepackage{multirow,multicol}
+\usepackage{scalerel}
+\usepackage{upgreek}
+\usepackage{ifthen}
+
+\usetikzlibrary{bayesnet}
+\setlist{noitemsep}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formatting commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\n}{\hfill\break}
+\newcommand{\nn}{\vspace{0.5\baselineskip}\n}
+\newcommand{\up}{\vspace{-\baselineskip}}
+\newcommand{\hangblock}[2]{\par\noindent\settowidth{\hangindent}{\textbf{#1: }}\textbf{#1: }\nolinebreak#2}
+\newcommand{\lemma}[1]{\hangblock{Lemma}{#1}}
+\newcommand{\defn}[1]{\hangblock{Defn}{#1}}
+\newcommand{\thm}[1]{\hangblock{Thm}{#1}}
+\newcommand{\cor}[1]{\hangblock{Cor}{#1}}
+\newcommand{\prop}[1]{\hangblock{Prop}{#1}}
+\newcommand{\ex}[1]{\hangblock{Ex}{#1}}
+\newcommand{\exer}[1]{\hangblock{Exer}{#1}}
+\newcommand{\fact}[1]{\hangblock{Fact}{#1}}
+\newcommand{\remark}[1]{\hangblock{Remark}{#1}}
+\newcommand{\proven}{\;$\square$\n}
+\newcommand{\problem}[1]{\par\noindent{\nolinebreak#1}\n}
+\newcommand{\problempart}[2]{\par\noindent\indent{}\settowidth{\hangindent}{\textbf{(#1)} \indent{}}\textbf{(#1) }\nolinebreak#2\n}
+\newcommand{\ptxt}[1]{\textrm{\textnormal{#1}}}
+\newcommand{\inlineeq}[1]{\centerline{$\displaystyle #1$}}
+\newcommand{\pageline}{\up\par\noindent\rule{\textwidth}{0.1pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set Theory
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\setmid}{\;\middle|\;}
+\newcommand{\ps}[1]{\mathcal{P}\left(#1\right)}
+\newcommand{\pfinite}[1]{\mathcal{P}^{\ptxt{finite}}\left(#1\right)}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\N}{\naturals}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\Z}{\integers}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Q}{\rationals}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\R}{\reals}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\C}{\complex}
+\newcommand{\halfPlane}{\mathbb{H}}
+\let\HSym\H
+\let\H\relax
+\newcommand{\H}{\halfPlane}
+\newcommand{\comp}{^{\complement}}
+\DeclareMathOperator{\Hom}{Hom}
+\newcommand{\Ind}{\mathbbm{1}}
+\newcommand{\cut}{\setminus}
+\DeclareMathOperator{\elem}{elem}
+
+% Differentiable Manifolds
+\newcommand{\RP}{\mathbb{RP}}
+\newcommand{\CP}{\mathbb{RP}}
+\newcommand{\osubset}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\subset}}
+\newcommand{\osubseteq}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\subseteq}}
+\newcommand{\osupset}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\supset}}
+\newcommand{\osupseteq}{\overset{\mathclap{\scalebox{0.5}{\ptxt{open}}}}{\supseteq}}
+\newcommand{\pdat}[3]{\left.\pd{#1}{#2}\right|_{#3}}
+\DeclareMathOperator{\so}{so}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\Diff}{Diff}
+\let\dSym\d
+\let\d\relax
+\newcommand{\d}{\partial}
+\DeclareMathOperator{\gl}{gl}
+\DeclareMathOperator{\Ad}{Ad}
+\newcommand{\comm}[1]{\left[#1\right]}
+\DeclareMathOperator{\Fix}{Fix}
+
+% Graph Theory
+\let\deg\relax
+\DeclareMathOperator{\deg}{deg}
+\newcommand{\degp}{\ptxt{deg}^{+}}
+\newcommand{\degn}{\ptxt{deg}^{-}}
+\newcommand{\precdot}{\mathrel{\ooalign{$\prec$\cr\hidewidth\hbox{$\cdot\mkern0.5mu$}\cr}}}
+\newcommand{\succdot}{\mathrel{\ooalign{$\cdot\mkern0.5mu$\cr\hidewidth\hbox{$\succ$}\cr\phantom{$\succ$}}}}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\affdim}{affdim}
+
+% Probability
+\newcommand{\parSymbol}{\P}
+\newcommand{\Prob}{\mathbb{P}}
+\renewcommand{\P}{\Prob}
+\newcommand{\Avg}{\mathbb{E}}
+\newcommand{\E}{\Avg}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Unif}{Unif}
+\DeclareMathOperator{\Binom}{Binom}
+\newcommand{\CI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\DeclareMathOperator{\Ber}{Ber}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Beta}{Beta}
+\DeclareMathOperator{\Normal}{N}
+\DeclareMathOperator{\DistGamma}{Gamma}
+
+% Standard Math
+\newcommand{\inv}{^{-1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil{}#1\right\rceil{}}
+\newcommand{\floor}[1]{\left\lfloor{}#1\right\rfloor{}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\of}{\circ}
+\newcommand{\tri}{\triangle}
+\newcommand{\inj}{\hookrightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\ndiv}{\nmid}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\map}[4]{\!\!\!\begin{array}[t]{rcl}#1 & \!\!\!\!\to & \!\!\!\!#2\\ {}#3 & \!\!\!\!\mapsto & \!\!\!\!#4\end{array}}
+\newcommand{\bigsum}[2]{\smashoperator[lr]{\sum_{\scalebox{#1}{$#2$}}}}
+\DeclareMathOperator{\gcf}{gcf}
+\newcommand{\restr}[1]{\left.#1\right|}
+
+% Linear Algebra
+\newcommand{\Id}{\textrm{\textnormal{Id}}}
+\newcommand{\im}{\textrm{\textnormal{im}}}
+\newcommand{\norm}[1]{\abs{\abs{#1}}}
+\newcommand{\tpose}{^{T}\!}
+\newcommand{\iprod}[1]{\left<#1\right>}
+\newcommand{\giprod}{\iprod{\;\,,\;}}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\trace}{tr}
+\newcommand{\chgBasMat}[3]{\!\!\tensor*[_{#1}]{\left[#2\right]}{_{#3}}}
+\newcommand{\vecBas}[2]{\tensor*[]{\left[#1\right]}{_{#2}}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\vspan}{span}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\V}[1]{\vec{#1}}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\compProj}{comp}
+\DeclareMathOperator{\row}{row}
+\newcommand{\smallPMatrix}[1]{\paren{\begin{smallmatrix}#1\end{smallmatrix}}}
+\newcommand{\smallBMatrix}[1]{\brack{\begin{smallmatrix}#1\end{smallmatrix}}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\dual}{^{*}}
+\newcommand{\pinv}{^{\dagger}}
+\newcommand{\horizontalMatrixLine}{\ptxt{\rotatebox[origin=c]{-90}{$|$}}}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\Symm}{Symm}
+\DeclareMathOperator{\SU}{SU}
+\DeclareMathOperator{\U}{U}
+
+% Multilinear Algebra
+\let\Lsym\L
+\let\L\relax
+\DeclareMathOperator{\L}{\mathscr{L}}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\Alt}{Alt}
+\DeclareMathOperator{\Sym}{Sym}
+\newcommand{\ot}{\otimes}
+\newcommand{\ox}{\otimes}
+\DeclareMathOperator{\asc}{asc}
+\DeclareMathOperator{\asSet}{set}
+\DeclareMathOperator{\sort}{sort}
+\DeclareMathOperator{\ringA}{\mathring{A}}
+\DeclareMathOperator{\Sh}{Sh}
+\DeclareMathOperator{\Bil}{Bil}
+
+% Topology
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\uball}{\mathcal{U}}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Bd}{Bd}
+\DeclareMathOperator{\rInt}{rInt}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\ah}{ah}
+\newcommand{\LargerTau}{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\tau}}}}}
+\newcommand{\Tau}{\mathcal{T}}
+
+% Analysis
+\DeclareMathOperator{\Graph}{Graph}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\hypo}{hypo}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\lint}[2]{\underset{#1}{\overset{#2}{{\color{black}\underline{{\color{white}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\uint}[2]{\underset{#1}{\overset{#2}{{\color{white}\underline{{\color{black}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\alignint}[2]{\underset{#1}{\overset{#2}{{\color{white}\underline{{\color{white}\overline{{\color{black}\int}}\color{black}}}}}}}
+\newcommand{\extint}{\ptxt{ext}\int}
+\newcommand{\extalignint}[2]{\ptxt{ext}\alignint{#1}{#2}}
+\newcommand{\conv}{\ast}
+\newcommand{\pd}[2]{\frac{\partial{}#1}{\partial{}#2}}
+\newcommand{\del}{\nabla}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\curl}{curl}
+\let\div\relax
+\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\vol}{vol}
+
+% Complex Analysis
+\let\Re\relax
+\DeclareMathOperator{\Re}{Re}
+\let\Im\relax
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Res}{Res}
+
+% Abstract Algebra
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\generated}[1]{\left<#1\right>}
+\newcommand{\cycle}[1]{\smallPMatrix{#1}}
+\newcommand{\id}{\ptxt{id}}
+\newcommand{\iso}{\cong}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\op}{op}
+\newcommand{\isom}[4]{\!\!\!\begin{array}[t]{rcl}#1 & \!\!\!\!\overset{\sim}{\to} & \!\!\!\!#2\\ #3 & \!\!\!\!\mapsto & \!\!\!\!#4\end{array}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\acts}{\;\reflectbox{\rotatebox[origin=c]{-90}{$\circlearrowright$}}\;}
+\newcommand{\disjunion}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\stab}{stab}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\Perm}{Perm}
+\DeclareMathOperator{\nsubgp}{\vartriangleleft}
+\DeclareMathOperator{\notnsubgp}{\ntriangleleft}
+\newcommand{\presentation}[2]{\left<#1\;\middle|\;#2\right>}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\fchar}{char}
+\DeclareMathOperator{\triv}{triv}
+\DeclareMathOperator{\reg}{reg}
+\DeclareMathOperator{\std}{std}
+\DeclareMathOperator{\Func}{Func}
+\DeclareMathOperator{\End}{End}
+
+% Convex Optimization
+\let\sectionSymbol\S
+\let\S\relax
+\newcommand{\S}{\mathbb{S}}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\ones}{\mathbbm{1}}
+\newcommand{\minimizeOver}[3]{\begin{array}{rl}\underset{#1}{\ptxt{minimize}} & #2\\ \ptxt{subject to} & #3\end{array}}
+\newcommand{\maximizeOver}[3]{\begin{array}{rl}\underset{#1}{\ptxt{maximize}} & #2\\ \ptxt{subject to} & #3\end{array}}
+\newcommand{\minimizationProblem}[2]{\minimizeOver{}{#1}{#2}}
+\newcommand{\maximizationProblem}[2]{\maximizeOver{}{#1}{#2}}
+\newcommand{\minimizeOverUnconstrained}[2]{\begin{array}{rl}\underset{#1}{\ptxt{minimize}} & #2\end{array}}
+\newcommand{\maximizeOverUnconstrained}[2]{\begin{array}{rl}\underset{#1}{\ptxt{maximize}} & #2\end{array}}
+\newcommand{\minimizationUnconstrained}[1]{\minimizeOverUnconstrained{}{#1}}
+\newcommand{\maximizationUnconstrained}[1]{\maximizeOverUnconstrained{}{#1}}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+
+% Proofs
+\newcommand{\st}{s.t.}
+\newcommand{\unique}{!}
+\newcommand{\iffdef}{\overset{\ptxt{def}}{\Leftrightarrow}}
+\newcommand{\eqVertical}{\rotatebox[origin=c]{90}{=}}
+\newcommand{\mapsfrom}{\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
+\newcommand{\mapsdown}{\rotatebox[origin=c]{-90}{$\mapsto$}\mkern2mu}
+\newcommand{\mapsup}{\rotatebox[origin=c]{90}{$\mapsto$}\mkern2mu}
+\newcommand{\from}{\!\mathrel{\reflectbox{\ensuremath{\to}}}}
+\newcommand{\labeledeq}[1]{\overset{\mathclap{\ptxt{#1}}}{=}}
+\newcommand{\eqdef}{\labeledeq{def}}
+
+% Brackets
+\newcommand{\paren}[1]{\left(#1\right)}
+\renewcommand{\brack}[1]{\left[#1\right]}
+\renewcommand{\brace}[1]{\left\{#1\right\}}
+\newcommand{\ang}[1]{\left<#1\right>}
+
+% Algorithms
+\algrenewcommand{\algorithmiccomment}[1]{\hskip 1em \texttt{// #1}}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\newcommand{\algP}{\ptxt{\textbf{P}}}
+\newcommand{\algNP}{\ptxt{\textbf{NP}}}
+\newcommand{\algNPC}{\ptxt{\textbf{NP-Complete}}}
+\newcommand{\algNPH}{\ptxt{\textbf{NP-Hard}}}
+\newcommand{\algEXP}{\ptxt{\textbf{EXP}}}
+\DeclareMathOperator{\fl}{fl}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other commands and shorthand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\flag}[1]{\textbf{\textcolor{red}{#1}}}
+\let\uSym\u
+\let\u\relax
+\newcommand{\u}[1]{\underline{#1}}
+\let\bSym\b
+\let\b\relax
+\newcommand{\b}[1]{\textbf{#1}}
+\let\iSym\i
+\let\i\relax
+\newcommand{\i}[1]{\textit{#1}}
+\let\scSym\sc
+\let\sc\relax
+\newcommand{\sc}[1]{\textsc{#1}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make l's curvy in math environments %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mathcode`l="8000
+\begingroup
+\makeatletter
+\lccode`\~=`\l
+\DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
+\lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
+\endgroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fix \vdots and \ddots %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{letltxmacro}
+\LetLtxMacro\orgvdots\vdots
+\LetLtxMacro\orgddots\ddots
+
+\makeatletter
+\DeclareRobustCommand\vdots{%
+	\mathpalette\@vdots{}%
+}
+\newcommand*{\@vdots}[2]{%
+	% #1: math style
+	% #2: unused
+	\sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+	\sbox2{$#1.\m@th$}%
+	\vbox{%
+		\dimen@=\wd0 %
+		\advance\dimen@ -3\ht2 %
+		\kern.5\dimen@
+		% remove side bearings
+		\dimen@=\wd2 %
+		\advance\dimen@ -\ht2 %
+		\dimen2=\wd0 %
+		\advance\dimen2 -\dimen@
+		\vbox to \dimen2{%
+			\offinterlineskip
+			\copy2 \vfill\copy2 \vfill\copy2 %
+		}%
+	}%
+}
+\DeclareRobustCommand\ddots{%
+	\mathinner{%
+		\mathpalette\@ddots{}%
+		\mkern\thinmuskip
+	}%
+}
+\newcommand*{\@ddots}[2]{%
+	% #1: math style
+	% #2: unused
+	\sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+	\sbox2{$#1.\m@th$}%
+	\vbox{%
+		\dimen@=\wd0 %
+		\advance\dimen@ -3\ht2 %
+		\kern.5\dimen@
+		% remove side bearings
+		\dimen@=\wd2 %
+		\advance\dimen@ -\ht2 %
+		\dimen2=\wd0 %
+		\advance\dimen2 -\dimen@
+		\vbox to \dimen2{%
+			\offinterlineskip
+			\hbox{$#1\mathpunct{.}\m@th$}%
+			\vfill
+			\hbox{$#1\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+			\vfill
+			\hbox{$#1\mathpunct{\kern\wd2}\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+		}%
+	}%
+}
+\makeatother
+
+\newcommand{\B}{
+	\begin{tikzpicture}
+	\filldraw [fill=red, draw=black] (0, 0) rectangle (0.37, 0.45);
+	\draw [line width=0.5mm, white ] (0.1,0.08) -- (0.1,0.38);
+	\draw[line width=0.5mm, white ] (0.1, 0.35) .. controls (0.2, 0.35) and (0.4, 0.2625) .. (0.1, 0.225);
+	\draw[line width=0.5mm, white ] (0.1, 0.225) .. controls (0.2, 0.225) and (0.4, 0.1625) .. (0.1, 0.1);
+	\end{tikzpicture}
+}
+
+% Allow custom symbols as arrows in tikz-cd
+\tikzset{
+  symbol/.style={
+    draw=none,
+    every to/.append style={
+      edge node={node [sloped, allow upside down, auto=false]{$#1$}}}
+  }
+}
+% Example: \arrow[r,symbol=\cong]
+% https://tex.stackexchange.com/questions/394154/how-to-include-inclusion-subgroup-relationship-in-tikz-cd-diagram
+
+\author{Thomas Cohn}
+\title{Stats 426 Lecture 10}
+\date{2/22/21} % Can also use \today
+
+\begin{document}
+\maketitle
+\setlength\RaggedRightParindent{\parindent}
+\RaggedRight
+
+\subsection*{Central Limit Theorem}
+
+\thm{
+	Let $X_{1},X_{2},\ldots$ be a sequence of independent random variables, with mean $0$ and variance $\sigma^{2}$, common cdf $F$, and common mgf $M$ defined in a neighborhood of $0$. Let $S_{n}=\sum_{i=1}^{n}X_{i}$. Then
+	\[
+		\lim_{n\to\infty}P\paren{\frac{S_{n}}{\sigma\sqrt{n}}\le{}x}=\phi(x),\;-\infty<x<\infty
+	\]
+	\up\nn
+	Proof: We know $E(S_{n})=n\mu$, $\Var(S_{n})=n\sigma^{2}$. Suppose that $E(X)=\mu$. Let $Z_{n}=\frac{S_{n}-n\mu}{\sigma\sqrt{n}}=\frac{\bar{X}_{n}-\mu}{\sigma/\sqrt{n}}$. Then $Z_{n}\overset{D}{\to}\Normal(0,1)$. That is, for large $n$, the distribution of $S_{n}$ is approximately $\Normal(n\mu=0,n\sigma^{2})$. So $\bar{X}_{n}$ is approximately $\Normal(\mu,\sigma^{2}/n)$.\proven
+}
+
+\ex{
+	Suppose $Y_{n}\sim\Bin(n,p)$, where $p\in(0,1)$. Then
+	\[
+		\frac{Y_{n}-np}{\sqrt{np(1-p)}}\overset{D}{\to}\Normal(0,1)
+	\]
+	Or $Y_{n}$ is approximately $\Normal(np,np(1-p))$. Our rule of thumb here is that he normal approximation of the CLT is valid when $np\ge{}5$ and $n(1-p)\ge{}5$. The closer $p$ is to $0$ or $1$, the larger the sample size must be.\n
+}
+
+\ex{
+	Suppose $Y_{n}\sim\Poisson(\lambda_{n})$, where $\lambda_{n}\to\infty$. Then
+	\[
+		\frac{Y_{n}-\lambda_{n}}{\sqrt{\lambda_{n}}}\overset{D}{\to}\Normal(0,1)
+	\]
+	Or $Y_{n}$ is approximately $\Normal(\lambda_{n},\lambda_{n})$.\n
+}
+
+\ex{
+	A coin is tossed $100$ times, and $60$ are heads. Is it fair?\nn
+	Well, let $X$ be the number of heads in $100$ tosses. $E(X)=np=50$, $\Var(X)=np(1-p)=25$ if the coin is fair. Assume the coin is fair. Then
+	\[
+		P(X\ge{}60)=P\paren{\frac{X-50}{5}\ge\frac{60-50}{5}}\approx1-\phi(2)\approx0.0228
+	\]
+	So it's probably not a fair coin!\n
+}
+
+\section*{Distributions Derived from the Normal Distribution}
+
+\defn{
+	The \u{chi-square distribution} with $n$ degrees of freedom is defined as follows: $Z\sim\Normal(0,1)$, $U=Z^{2}\sim\chi_{1}^{2}$. If $U_{1},\ldots,U_{n}$ are independent chi-square distributions with $1$ degree of freedom, then their sum is a chi-square distribution with $n$ degrees of freedom, i.e., $Y=U_{1}+\cdots+U_{n}\sim\chi_{n}^{2}$.\n
+}
+
+\defn{
+	The \u{$t$-distribution} with $n$ degrees of freedom is defined as follows: $Z\sim\Normal(0,1)$, $U\sim\chi_{n}^{2}$, $Z\perp{}U$, then $T=\frac{Z}{\sqrt{U/n}}$ has a $t_{n}$-distribution.\n
+}
+
+\defn{
+	The \u{$F$-distribution} with $m$ and $n$ degrees of freedom is defined as follows: $U\sim\chi_{n}^{2}$, $V\sim\chi_{m}^{2}$, $U\perp{}V$. $F=\frac{V/m}{U/n}$ has a $F_{m,n}$ distribution: $F\sim{}F_{m,n}$.\n
+}
+
+\subsection*{Chi-Square Distribution}
+
+\begin{itemize}
+	\item $Y\sim\chi_{n}^{2}\equiv{}Y\sim\DistGamma(\lambda=1/2,\alpha=n/2)$
+	\item $f_{Y}(y)=\frac{1}{2^{n/2}\Gamma(n/2)}y^{(n/2)-1}e^{-(1/2)y}$
+	\item $E(Y)=\frac{\alpha}{\lambda}=\frac{n/2}{1/2}=n$
+	\item $\Var(Y)=\frac{\alpha}{\lambda^{2}}=\frac{n/2}{1/4}=2n$
+	\item The mgf for $\DistGamma(\lambda,\alpha)$ is $(1-t/\lambda)^{-\alpha}$ for $t<\lambda$, so the mgf for $\chi_{n}^{2}$ is
+	\[
+		(1-2t)^{-n/2}=\underbrace{(1-2t)^{-1/2}\cdots(1-2t)^{-1/2}}_{n}
+	\]
+\end{itemize}
+
+\exer{
+	Suppose $Z_{1},\ldots,Z_{N}\sim\Normal(0,1)$ are i.i.d. Then $Z_{1}+\cdots+Z_{n}\sim\chi_{n}^{2}$.\nn
+	Prove by induction: For $n=1$, use transformation or the cdf. Note that $U_{1}\sim\DistGamma(\lambda,\alpha_{1})$ and $U_{2}\sim\DistGamma(\lambda,\alpha_{2})$, with $U_{1}\perp{}U_{2}$, implies that $U_{1}+U_{2}\sim\DistGamma(\lambda,\alpha_{1}+\alpha_{2})$.\n
+}
+
+\par\noindent
+What about the CLT? Well, if $U_{i}=Z_{i}^{2}$, where $Z_{i}\sim\Normal(0,1)$ i.i.d., then $U_{i}\sim\chi^{2}_{1}$, or $\DistGamma(1/2,1/2)$.\n
+Let $S_{n}=U_{1}+\cdots+U_{n}$. Then CLT implies that $S_{n}$ is approximately normal, but we need to find its mean and variance.
+\[
+	E(S_{n})=nE(U_{1})=n\cdot{}1=n\qquad\Var(S_{n})=n\Var(U_{1})=n\cdot{}2=2n
+\]
+Thus, $S_{n}$ is approximately $\Normal(n,2n)$.\n
+
+\end{document}
